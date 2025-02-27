@@ -4,6 +4,8 @@ import {
   getUsers,
 } from "../controllers/userController";
 import { Router } from "express";
+import checkLoggedIn from "../middleware/checkLoggedIn";
+import checkPageOwnership from "../middleware/checkPageOwnership";
 import {
   createPage,
   getPageById,
@@ -25,12 +27,13 @@ router.get("/users/:id", getUserById);
 
 // Page routes
 router.get("/pages", getPages);
-router.post("/pages", createPage);
+router.post("/pages", checkLoggedIn, createPage);
 router.get("/pages/:id", getPageById);
+router.put("/pages/:id", checkLoggedIn, checkPageOwnership, createPage); // Update a page
 
 // Link routes
 router.get("/links", getLinks);
-router.post("/links", createLink);
+router.post("/links", checkLoggedIn, createLink);
 router.get("/links/:id", getLinkById);
 
 // Analytics routes
